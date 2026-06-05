@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Schema de base de donnees - StockFlow</title>
+    <style>
+        @page { size: A4 landscape; margin: 18mm; }
+        body {
+            color: #111827;
+            font-family: "DejaVu Sans", sans-serif;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+        h1, h2, h3, p { margin: 0; }
+        h1 {
+            color: #2e1065;
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+        h2 {
+            color: #2e1065;
+            font-size: 20px;
+            margin: 0 0 10px;
+        }
+        h3 { font-size: 15px; }
+        .subtitle {
+            color: #4b5563;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+        .diagram-page {
+            page-break-after: always;
+        }
+        .diagram-panel {
+            border: 2px solid #ddd6fe;
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .diagram-note {
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            border-radius: 8px;
+            color: #4c1d95;
+            font-size: 12px;
+            margin-bottom: 12px;
+            padding: 8px 10px;
+        }
+        .diagram-row {
+            display: table;
+            margin: 0 0 12px;
+            table-layout: fixed;
+            width: 100%;
+        }
+        .node,
+        .arrow {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .node {
+            background: #ffffff;
+            border: 1.5px solid #7c3aed;
+            border-radius: 10px;
+            box-shadow: 0 1px 0 #ede9fe;
+            height: 58px;
+            padding: 8px 10px;
+            text-align: center;
+            width: 17%;
+        }
+        .node strong {
+            color: #111827;
+            display: block;
+            font-size: 12px;
+            letter-spacing: .02em;
+        }
+        .node span {
+            color: #6b7280;
+            display: block;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        .arrow {
+            color: #6d28d9;
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
+            width: 7%;
+        }
+        .arrow span:before,
+        .arrow span:after {
+            content: "";
+            display: inline-block;
+            border-top: 2px solid #8b5cf6;
+            margin: 0 5px 3px;
+            width: 18px;
+        }
+        .nn-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-top: 14px;
+            padding: 12px 14px;
+        }
+        .nn-box ul {
+            margin: 8px 0 0 18px;
+            padding: 0;
+        }
+        .nn-box li { margin-bottom: 4px; }
+        .page-break {
+            page-break-before: always;
+        }
+        .table-card {
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+        .table-card-title {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 9px 11px;
+        }
+        .table-card-title p {
+            color: #6b7280;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th {
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 10px;
+            padding: 7px 9px;
+            text-align: left;
+            text-transform: uppercase;
+        }
+        td {
+            border-top: 1px solid #f3f4f6;
+            padding: 7px 9px;
+            vertical-align: top;
+        }
+        .field {
+            color: #111827;
+            font-weight: 700;
+        }
+        .badge {
+            border-radius: 999px;
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            margin: 0 4px 4px 0;
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        .pk { background: #ede9fe; color: #5b21b6; }
+        .fk { background: #dbeafe; color: #1d4ed8; }
+        .nn { background: #ecfdf5; color: #047857; }
+        .muted { color: #9ca3af; }
+    </style>
+</head>
+<body>
+    <section class="diagram-page">
+        <h1>Schema de base de donnees - StockFlow</h1>
+        <p class="subtitle">Vue simplifiee : uniquement les tables et les liaisons. Les champs sont detailles apres le diagramme.</p>
+
+        <div class="diagram-panel">
+            <div class="diagram-note">
+                Lecture : les boites sont les tables, les connecteurs indiquent la cardinalite principale. Les pivots Spatie et les tables associatives metier sont affichees comme des tables a part entiere.
+            </div>
+            <div class="diagram-row"><div class="node"><strong>CATEGORIES</strong><span>classe</span></div><div class="arrow"><span>1,N</span></div><div class="node"><strong>PRODUCTS</strong><span>produit central</span></div><div class="arrow"><span>N,1</span></div><div class="node"><strong>SUPPLIERS</strong><span>fournit</span></div></div><div class="diagram-row"><div class="node"><strong>PRODUCTS</strong><span>PRODUCTS</span></div><div class="arrow"><span>1,N</span></div><div class="node"><strong>STOCK_MOVEMENTS</strong><span>journal stock</span></div><div class="arrow"><span>N,1</span></div><div class="node"><strong>USERS</strong><span>responsable</span></div></div><div class="diagram-row"><div class="node"><strong>PRODUCTS</strong><span>PRODUCTS</span></div><div class="arrow"><span>1,N</span></div><div class="node"><strong>ALERTS</strong><span>seuil critique</span></div><div class="arrow"><span> </span></div><div class="node"><strong>FORECASTS</strong><span>previsions produit</span></div></div><div class="diagram-row"><div class="node"><strong>USERS</strong><span>USERS</span></div><div class="arrow"><span>1,N</span></div><div class="node"><strong>INVENTORIES</strong><span>comptage</span></div><div class="arrow"><span>1,N</span></div><div class="node"><strong>INVENTORY_ITEMS</strong><span>lignes</span></div><div class="arrow"><span>N,1</span></div><div class="node"><strong>PRODUCTS</strong><span>PRODUCTS</span></div></div><div class="diagram-row"><div class="node"><strong>USERS</strong><span>USERS</span></div><div class="arrow"><span>N,N</span></div><div class="node"><strong>MODEL_HAS_ROLES</strong><span>pivot</span></div><div class="arrow"><span>N,N</span></div><div class="node"><strong>ROLES</strong><span>ROLES</span></div><div class="arrow"><span>N,N</span></div><div class="node"><strong>ROLE_HAS_PERMISSIONS</strong><span>pivot</span></div><div class="arrow"><span>N,N</span></div><div class="node"><strong>PERMISSIONS</strong><span>PERMISSIONS</span></div></div><div class="diagram-row"><div class="node"><strong>USERS</strong><span>USERS</span></div><div class="arrow"><span>N,N</span></div><div class="node"><strong>MODEL_HAS_PERMISSIONS</strong><span>pivot</span></div><div class="arrow"><span>N,N</span></div><div class="node"><strong>PERMISSIONS</strong><span>PERMISSIONS</span></div></div>
+        </div>
+
+        <div class="nn-box">
+            <h2>Relations N,N a retenir</h2>
+            <ul>
+                <li><strong>users N,N roles</strong> via <code>model_has_roles</code>.</li>
+                <li><strong>roles N,N permissions</strong> via <code>role_has_permissions</code>.</li>
+                <li><strong>users N,N permissions</strong> via <code>model_has_permissions</code>.</li>
+                <li><strong>inventories N,N products</strong> via <code>inventory_items</code>.</li>
+                <li><strong>products N,N users</strong> via <code>stock_movements</code>, relation historique/evenementielle.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Dictionnaire des tables</h2>
+            <section class="table-card">
+        <div class="table-card-title">
+            <h3>users</h3>
+            <p>Utilisateurs - Comptes applicatifs et statut d activation.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">email</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">email_verified_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">password</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">status</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;active&#039;</td></tr><tr><td class="field">last_login_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">remember_token</td><td>varchar</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>categories</h3>
+            <p>Categories - Referentiel de classement des produits.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">description</td><td>TEXT</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">status</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;active&#039;</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>suppliers</h3>
+            <p>Fournisseurs - Referentiel des fournisseurs.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">contact_name</td><td>varchar</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">phone</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">email</td><td>varchar</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">address</td><td>TEXT</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">status</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;active&#039;</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>products</h3>
+            <p>Produits - Catalogue produit et stock courant.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">category_id</td><td>INTEGER</td><td><span class="badge fk">FK categories.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">supplier_id</td><td>INTEGER</td><td><span class="badge fk">FK suppliers.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">sku</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">barcode</td><td>varchar</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">purchase_price</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">sale_price</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">current_stock</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;0&#039;</td></tr><tr><td class="field">critical_stock</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">unit</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">status</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;active&#039;</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>stock_movements</h3>
+            <p>Mouvements de stock - Journal des entrees, sorties et ajustements.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">product_id</td><td>INTEGER</td><td><span class="badge fk">FK products.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">user_id</td><td>INTEGER</td><td><span class="badge fk">FK users.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">type</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">quantity</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">stock_before</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">stock_after</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">reference</td><td>varchar</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">notes</td><td>TEXT</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">movement_date</td><td>datetime</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>inventories</h3>
+            <p>Inventaires - Sessions de comptage physique.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">user_id</td><td>INTEGER</td><td><span class="badge fk">FK users.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">inventory_date</td><td>date</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">status</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;draft&#039;</td></tr><tr><td class="field">notes</td><td>TEXT</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">validated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>inventory_items</h3>
+            <p>Lignes d inventaire - Produits comptes dans un inventaire, avec ecarts.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">inventory_id</td><td>INTEGER</td><td><span class="badge fk">FK inventories.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">product_id</td><td>INTEGER</td><td><span class="badge fk">FK products.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">expected_quantity</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">actual_quantity</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">difference</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>alerts</h3>
+            <p>Alertes - Historique des alertes de seuil critique.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">product_id</td><td>INTEGER</td><td><span class="badge fk">FK products.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">type</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;critical_stock&#039;</td></tr><tr><td class="field">message</td><td>TEXT</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">status</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>&#039;new&#039;</td></tr><tr><td class="field">triggered_at</td><td>datetime</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">resolved_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>forecasts</h3>
+            <p>Previsions - Historique des calculs de rupture et recommandations.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">product_id</td><td>INTEGER</td><td><span class="badge fk">FK products.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">average_daily_usage</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">predicted_out_date</td><td>date</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">recommended_quantity</td><td>numeric</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">risk_score</td><td>INTEGER</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">generated_at</td><td>datetime</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>roles</h3>
+            <p>Roles - Roles Spatie Permission.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">guard_name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>permissions</h3>
+            <p>Permissions - Permissions Spatie Permission.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">guard_name</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">created_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr><tr><td class="field">updated_at</td><td>datetime</td><td><span class="muted">-</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>model_has_roles</h3>
+            <p>Attribution roles - Pivot entre utilisateurs et roles.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">role_id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge fk">FK roles.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">model_type</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">model_id</td><td>INTEGER</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>model_has_permissions</h3>
+            <p>Permissions directes - Pivot entre utilisateurs et permissions directes.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">permission_id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge fk">FK permissions.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">model_type</td><td>varchar</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">model_id</td><td>INTEGER</td><td><span class="badge nn">NOT NULL</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>    <section class="table-card">
+        <div class="table-card-title">
+            <h3>role_has_permissions</h3>
+            <p>Permissions par role - Pivot entre roles et permissions.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type</th>
+                    <th>Cles / contraintes</th>
+                    <th>Defaut</th>
+                </tr>
+            </thead>
+            <tbody><tr><td class="field">permission_id</td><td>INTEGER</td><td><span class="badge pk">PK</span> <span class="badge fk">FK permissions.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr><tr><td class="field">role_id</td><td>INTEGER</td><td><span class="badge fk">FK roles.id</span> <span class="badge nn">NOT NULL</span></td><td>-</td></tr></tbody>
+        </table>
+    </section>
+
+        <h2>Tables techniques Laravel</h2>
+        <ul><li><strong>sessions</strong> : table technique Laravel.</li><li><strong>cache</strong> : table technique Laravel.</li><li><strong>cache_locks</strong> : table technique Laravel.</li><li><strong>jobs</strong> : table technique Laravel.</li><li><strong>job_batches</strong> : table technique Laravel.</li><li><strong>failed_jobs</strong> : table technique Laravel.</li><li><strong>password_reset_tokens</strong> : table technique Laravel.</li></ul>
+    </section>
+</body>
+</html>
