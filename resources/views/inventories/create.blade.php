@@ -27,7 +27,7 @@
                         @forelse ($products as $product)
                             <label class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 hover:bg-gray-50">
                                 <span><span class="block font-medium text-gray-900">{{ $product->name }}</span><span class="block text-xs text-gray-500">{{ $product->sku }}</span></span>
-                                <span class="flex items-center gap-4"><span class="text-sm text-gray-600">{{ number_format($product->current_stock, 0, ',', ' ') }} {{ $product->unit }}</span><input type="checkbox" name="product_ids[]" value="{{ $product->id }}" @checked(in_array($product->id, old('product_ids', []))) class="rounded border-gray-300 text-blue-700 focus:ring-blue-600"></span>
+                                <span class="flex items-center gap-4"><span class="text-sm text-gray-600">{{ number_format($product->current_stock, 0, ',', ' ') }} {{ $product->unit }}</span><input type="checkbox" name="product_ids[]" value="{{ $product->id }}" @checked(in_array($product->id, old('product_ids', $selectedProductIds ?? []))) class="rounded border-gray-300 text-blue-700 focus:ring-blue-600"></span>
                             </label>
                         @empty
                             <p class="px-5 py-8 text-center text-sm text-gray-500">Aucun produit actif.</p>

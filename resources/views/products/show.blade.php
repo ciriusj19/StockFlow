@@ -41,7 +41,7 @@
             @if ($product->status->value === 'active' && (auth()->user()->can('stock.entry') || auth()->user()->can('stock.exit') || auth()->user()->can('stock.adjustment')))
                 <section class="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
                     @can('stock.entry')
-                        <form method="POST" action="{{ route('products.movements.store', $product) }}" class="rounded-lg border border-emerald-200 bg-white p-5">
+                        <form id="stock-entry" method="POST" action="{{ route('products.movements.store', $product) }}" class="scroll-mt-24 rounded-lg border border-emerald-200 bg-white p-5">
                             @csrf
                             <input type="hidden" name="type" value="ENTRY">
                             <h2 class="font-semibold text-gray-900">Entree de stock</h2>

@@ -68,6 +68,20 @@ class InventoryWorkflowTest extends TestCase
         ])->assertForbidden();
     }
 
+    public function test_inventory_creation_can_preselect_a_product_from_an_alert(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+        $manager = User::factory()->create();
+        $manager->assignRole('Responsable stock');
+        $product = Product::factory()->create(['name' => 'Produit a inventorier']);
+
+        $this->actingAs($manager)
+            ->get(route('inventories.create', ['product_id' => $product->getKey()]))
+            ->assertOk()
+            ->assertSee('Produit a inventorier')
+            ->assertSee('value="'.$product->getKey().'" checked', false);
+    }
+
     public function test_warehouse_keeper_cannot_create_inventory(): void
     {
         $this->seed(RolePermissionSeeder::class);

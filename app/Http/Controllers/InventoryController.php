@@ -30,14 +30,24 @@ class InventoryController extends Controller
         return view('inventories.index', compact('inventories', 'differenceChart'));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
+        $selectedProductIds = [];
+        $requestedProductId = $request->integer('product_id');
+
+        if ($requestedProductId > 0 && Product::query()
+            ->where('id', $requestedProductId)
+            ->where('status', RecordStatus::Active->value)
+            ->exists()) {
+            $selectedProductIds[] = $requestedProductId;
+        }
+
         $products = Product::query()
             ->where('status', RecordStatus::Active->value)
             ->orderBy('name')
             ->get();
 
-        return view('inventories.create', compact('products'));
+        return view('inventories.create', compact('products', 'selectedProductIds'));
     }
 
     public function store(Request $request): RedirectResponse

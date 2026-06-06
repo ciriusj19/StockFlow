@@ -28,7 +28,10 @@ class AlertForecastWorkflowTest extends TestCase
         $this->actingAs($manager)
             ->get(route('alerts.show', $alert))
             ->assertOk()
-            ->assertSee($product->name);
+            ->assertSee($product->name)
+            ->assertSee('Entrer du stock')
+            ->assertSee('Faire un inventaire')
+            ->assertDontSee('Marquer comme résolue');
 
         $this->assertSame(AlertStatus::Viewed, $alert->refresh()->status);
 
