@@ -16,6 +16,18 @@ Encadreur : À compléter
 
 Année académique : À compléter
 
+## Informations à compléter avant la version finale
+
+Pour produire une version définitive conforme aux attentes de l'établissement, les informations suivantes doivent être précisées :
+
+- nom complet de l'auteur ;
+- nom de l'établissement ;
+- filière ou spécialité ;
+- nom de l'encadreur ;
+- année académique exacte ;
+- exigences de mise en page imposées par l'école, si elles existent ;
+- intitulé officiel à conserver pour le sujet.
+
 [PAGE_BREAK]
 
 ## Résumé
@@ -744,4 +756,3 @@ Directeur général : synthèse décisionnelle et rapports
 - diagramme de séquence pour la prévision ;
 - diagramme de flux opérationnel vers décisionnel ;
 - schéma de la couche analytique.
-
